@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../App.css';
 
 const SingleSquare = (props) => {
-    let buttonValue = '';
+    const [textColor, setTextColor] = useState('white');
+
+    const singleSquareClick = () => {
+        setTextColor('black');
+        props.click(props.squareInd);
+    };
+
     return (
-        <div>
-            <button className='single-square'>{props.char}</button>
-        </div>
+        <button className='single-square' style={{ color: textColor }} onClick={() => singleSquareClick()}>
+            {props.char}
+        </button>
     );
 };
 

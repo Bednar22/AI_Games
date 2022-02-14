@@ -3,30 +3,72 @@ import SingleSquare from './singleSquare';
 import '../../App.css';
 
 const MainBoard = () => {
-    const [boardUI, setBoardUI] = useState([]);
     const [board, setBoard] = useState([]);
+    const [turn, setTurn] = useState(true);
 
     const createBoard = (size) => {
-        let helpArray = new Array(size).fill(<SingleSquare></SingleSquare>);
-        let newBoard = new Array(size).fill(helpArray);
         let boardlogic = new Array(size).fill(new Array(size));
-        setBoardUI(newBoard);
+        for (let i = 0; i < size; i++) {
+            for (let j = 0; j < size; j++) {
+                boardlogic[i][j] = '|';
+            }
+        }
         setBoard(boardlogic);
     };
 
-    const setChar = (char) => {
-        boardUI[0][0] = <SingleSquare char={char}></SingleSquare>;
-        board[0][0] = char;
-        console.log(board);
+    const setChar = (index) => {
+        let helpBoard = [...board[index[0]]];
+        let helpBoard2 = [...board];
+
+        if (helpBoard[index[1]] === '|') {
+            if (turn === true) {
+                helpBoard[index[1]] = 'O';
+                setTurn(false);
+            } else {
+                helpBoard[index[1]] = 'X';
+                setTurn(true);
+            }
+        } else {
+            return;
+        }
+        helpBoard2[index[0]] = helpBoard;
+        console.table(helpBoard2);
+        setBoard(helpBoard2);
+    };
+
+    const checkVictory = () => {
+        let now = 'I';
+        let before = 'I';
+        let count = 0;
+        let helpBoard = [...board];
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board.length; j++) {}
+        }
     };
 
     useEffect(() => {
-        createBoard(3);
+        createBoard(4);
     }, []);
 
     return (
         <>
-            {boardUI};{setChar('k')}
+            <div className='main-board'>
+                {board.map((item, index) => {
+                    return (
+                        <div className='buttons-row'>
+                            {item.map((item2, index2) => {
+                                return (
+                                    <SingleSquare
+                                        squareInd={[index, index2]}
+                                        char={item2}
+                                        click={setChar}
+                                    ></SingleSquare>
+                                );
+                            })}
+                        </div>
+                    );
+                })}
+            </div>
         </>
     );
 };

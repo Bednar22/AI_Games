@@ -1,4 +1,26 @@
+:root {
+    --butwidth: 50px;
+    --butheight: 50px;
+}
+
 .single-square {
-    width: 50px;
-    height: 50px;
+    background-color: white;
+    width: var(--butwidth);
+    height: var(--butheight);
+    display: inline-block;
+    margin: 2px;
+    padding: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.buttons-row {
+    overflow: hidden;
+}
+
+.main-board {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
