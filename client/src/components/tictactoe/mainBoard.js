@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import SingleSquare from './singleSquare';
 import '../../App.css';
-
+import { areMovesLeft, checkScore, minimax, findBestMove } from './minimax';
 const MainBoard = () => {
     const [board, setBoard] = useState([]);
     const [turn, setTurn] = useState(true);
     const [end, setEnd] = useState(false);
     const [winner, setWinner] = useState('');
+    const player = 'X';
+    const opponent = 'O';
+    let boardExp = [
+        ['X', 'O', 'X'],
+        ['O', 'O', 'X'],
+        ['|', '|', '|'],
+    ];
+
     const createBoard = (size) => {
         let boardlogic = new Array(size).fill(new Array(size));
         for (let i = 0; i < size; i++) {
@@ -39,66 +47,14 @@ const MainBoard = () => {
         }
     };
 
-    const checkVictory = () => {
-        // sprawdzanie przekatnej \
-        for (let i = 0; i < board.length - 2; i++) {
-            for (let j = 0; j < board.length - 2; j++) {
-                if (board[i][j] !== '|') {
-                    if (board[i][j] === board[i + 1][j + 1] && board[i][j] === board[i + 2][j + 2]) {
-                        //console.log('JEJ PRZEKATNA \\');
-                        setEnd(true);
-                        return board[i][j];
-                    }
-                }
-            }
-        }
-        // sprawdzanie pionu
-        for (let i = 0; i < board.length - 2; i++) {
-            for (let j = 0; j < board.length; j++) {
-                if (board[i][j] !== '|') {
-                    if (board[i][j] === board[i + 1][j] && board[i][j] === board[i + 2][j]) {
-                        //console.log('JEJ PION');
-                        setEnd(true);
-                        return board[i][j];
-                    }
-                }
-            }
-        }
-
-        // sprawdzanie linii poziomych
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board.length - 2; j++) {
-                if (board[i][j] !== '|') {
-                    if (board[i][j] === board[i][j + 1] && board[i][j] === board[i][j + 2]) {
-                        //console.log('JEJ POZIOM');
-                        setEnd(true);
-                        return board[i][j];
-                    }
-                }
-            }
-        }
-
-        //sprawdzanie przekatnych /
-        for (let i = 0; i < board.length - 2; i++) {
-            for (let j = 2; j < board.length; j++) {
-                if (board[i][j] !== '|') {
-                    if (board[i][j] === board[i + 1][j - 1] && board[i][j] === board[i + 2][j - 2]) {
-                        //console.log('JEST PRZEKATNA');
-                        setEnd(true);
-                        return board[i][j];
-                    }
-                }
-            }
-        }
-        return '';
-    };
-
     useEffect(() => {
-        createBoard(4);
+        createBoard(3);
+        findBestMove(boardExp);
     }, []);
 
     useEffect(() => {
-        const win = checkVictory();
+        console.log('Czy sa jeszcze ruchy?', areMovesLeft(board));
+        const win = checkScore(board);
         setWinner(win);
     }, [board]);
 
