@@ -7,6 +7,8 @@ const MainBoard = () => {
     const [turn, setTurn] = useState(true);
     const [end, setEnd] = useState(false);
     const [winner, setWinner] = useState('');
+    const [human, setHuman] = useState(true);
+
     const player = 'X';
     const opponent = 'O';
     let boardExp = [
@@ -44,19 +46,56 @@ const MainBoard = () => {
             helpBoard2[index[0]] = helpBoard;
             //console.table(helpBoard2);
             setBoard(helpBoard2);
+            setHuman((prevState) => !prevState);
+            return helpBoard2;
         }
+    };
+
+    const setCharMachine = (index) => {
+        let helpBoard = [...board[index[0]]];
+        let helpBoard2 = [...board];
+
+        if (end === false) {
+            if (helpBoard[index[1]] === '|') {
+                if (turn === false) {
+                    helpBoard[index[1]] = 'X';
+                    setTurn(true);
+                }
+            }
+        }
+        helpBoard2[index[0]] = helpBoard;
+        setBoard(helpBoard2);
+    };
+
+    const isEmpty = () => {
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board.length; j++) {
+                if (board[i][j] !== '|') {
+                    return false;
+                }
+            }
+        }
+        return true;
     };
 
     useEffect(() => {
         createBoard(3);
-        findBestMove(boardExp);
     }, []);
 
     useEffect(() => {
-        console.log('Czy sa jeszcze ruchy?', areMovesLeft(board));
         const win = checkScore(board);
         setWinner(win);
     }, [board]);
+
+    useEffect(() => {
+        if (isEmpty() === false && areMovesLeft(board) === true) {
+            console.log('WYKONUJE RUCH BOTA');
+            console.log(board);
+            const machineMove = findBestMove(board);
+            setCharMachine(machineMove);
+            console.log(board);
+        }
+    }, [human]);
 
     return (
         <>

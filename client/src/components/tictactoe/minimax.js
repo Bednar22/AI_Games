@@ -79,17 +79,14 @@ export const checkScore = (hboard) => {
 export const minimax = (board, depth, isMax) => {
     let hboard = [...board];
     let score = checkScore(hboard);
-    console.log(score);
+
     if (score === 10) {
-        console.log('Wygrana');
         return score;
     }
     if (score === -10) {
-        console.log('Przegrana');
         return score;
     }
     if (areMovesLeft(hboard) === false) {
-        console.log('Brak ruchow');
         return 0;
     }
     if (isMax) {
@@ -127,7 +124,7 @@ export const findBestMove = (board) => {
     for (let i = 0; i < hboard.length; i++) {
         for (let j = 0; j < hboard.length; j++) {
             // Check if cell is empty
-            if (hboard[i][j] == '|') {
+            if (hboard[i][j] === '|') {
                 // Make the move
                 hboard[i][j] = player;
                 // compute evaluation function for this move.
@@ -146,5 +143,5 @@ export const findBestMove = (board) => {
         }
     }
     console.log('BEST MOVE IS:', { bestVal }, 'OPTYMLNY RUCH:', { bestI, bestJ });
-    return bestI, bestJ;
+    return [bestI, bestJ];
 }; //end of findBestMove func
